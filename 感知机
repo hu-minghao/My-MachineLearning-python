@@ -1,0 +1,57 @@
+import numpy as np
+data = np.array([[1,2,3,-1],[2,4,5,-1],[3,5,6,1],[4,7,8,1]])
+data=data.T
+n = data.shape[1]-1 #data.shpe返回数组形状，第一位为行数，第二为列数，这里第四列为标记，故减一
+w = np.zeros([1,n]) #np.zeros()参数为数组
+b = 0
+reta = 1 #学习率
+
+
+
+def calDistence(item):
+    '''
+    计算点到超平面距离，item为样本点
+    :param item:
+    :return: float
+    '''
+    global w,b
+    res = (item[:-1]*w+b)*item[-1]
+    return res
+
+def update(item):
+    """
+    根据错分类点，更新权值及参数，
+    :param item:
+    :return: float
+    """
+    global w,b
+    w+=reta*item[:-1]*item[-1]
+    b+=reta*item[-1]
+    return w,b
+
+
+def train():
+    """
+    训练样本
+    """
+    flag=False
+    for i in range(data.shape[1]):
+        item=data[:,i]
+        if calDistence(item)<=0:
+            flag=True#存在未正确分类的点，只要存在一个点，则flag值就会一直为TRUE
+            update(item)
+    if not flag: #如果没有误分类点
+        print('感知机超平面为:w '+str(w)+'b '+str(b))
+    return flag
+
+if __name__ == '__main__':
+    for i in range(100):
+        if not train():
+            break
+
+
+
+
+
+
+
