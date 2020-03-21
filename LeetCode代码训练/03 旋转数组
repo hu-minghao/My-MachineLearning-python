@@ -1,0 +1,89 @@
+给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。
+
+示例 1:
+
+输入: [1,2,3,4,5,6,7] 和 k = 3
+输出: [5,6,7,1,2,3,4]
+解释:
+向右旋转 1 步: [7,1,2,3,4,5,6]
+向右旋转 2 步: [6,7,1,2,3,4,5]
+向右旋转 3 步: [5,6,7,1,2,3,4]
+#方法一，利用python切片，一行搞定（执行用时：56 ms，内存消耗：13.7 MB）
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        #python切片算法
+        L=len(nums)
+        nums[:]=nums[L-k:]+nums[:L-k]#切片是否是在原数组上进行的就不知道了
+
+
+#方法二（摘抄其他人算法，但也挺简单的）
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        for i in range(k):
+            nums.insert(0,nums[len(nums)-1])#数组的insert函数，在原数组目标位置挤进一个数，如果该位置原值依次向后移动
+            nums.pop()#弹出该位置的值，默认是结尾值
+    
+ #方法三,逐步移动法（33 / 34 个通过测试用例）
+ class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        #python移动位置算法，利用两个中间变量，实现位置的依次移动
+        for j in range(k):
+            p=nums[-1]
+            for i in range(len(nums)):
+                temp = nums[i]
+                nums[i] = p
+                p = temp
+#测试结果显示超出时间限制，当然是在测试数据很大的情况下出现超时的，这个算法用到了两次for循环，时间复杂度为O(3n*k)，较线性复杂度要高
+ 
+ 
+ #方法四，移动法，但是是一次到位的移动
+ class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        count,index,temp = 0,0,nums[0]
+        done_index = [0]
+        while count < len(nums):
+            count,target = count+1, (index + k) % len(nums)
+            temp,nums[target] = nums[target],temp
+            if target not in done_index:
+                index = target
+            elif target + 1 < len(nums):
+                index,temp = target + 1,nums[target + 1]
+            done_index.append(index)
+
+#方法五，三次反转法（执行用时 :
+"""
+44 ms
+, 在所有 Python3 提交中击败了
+85.55%
+的用户
+内存消耗 :
+13.8 MB
+, 在所有 Python3 提交中击败了
+99.75%
+的用户）
+"""
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        #python 这里三次反转，速度也挺快的.
+        L=len(nums)
+        k=k%L
+        def swap(l,r):
+            while(l<r):
+                nums[l],nums[r] = nums[r],nums[l]
+                l+=1
+                r-=1
+        swap(0,L-1)
+        swap(0,k-1)
+        swap(k,L-1)
