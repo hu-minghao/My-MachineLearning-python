@@ -1,0 +1,15 @@
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        j=0
+        k=1
+        for i in range(1,len(nums)):
+            if nums[j]!=nums[i]:
+                j+=1
+                k+=1
+                nums[j]=nums[i]
+        return k
+#通过，耗时32ms,内存14.6M
+#总结，使用双指针，但这个方法只能对已排好序的数组进行删除，类似于[1,2,3,1,2,3]这样的数组就不行，因为指针中对相等只判别一次。但Leetcode上的测试用例都是
+#已排好序的。
+            
+            
