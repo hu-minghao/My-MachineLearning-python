@@ -1,0 +1,31 @@
+from sklearn.neighbors import KNeighborsClassifier #导入KNN分类库
+#sklearn自带的train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y)
+knn_classifier=KNeighborsClassifier(6)#参数为K
+knn_classifier.fit(x_train,y_train)
+y_predict=knn_classifier.predict(x_test)
+scores=knn_classifier.score(x_test,y_test)
+print('acc:{}'.format(sum(y_predict==y_test)/len(x_test)),scores)
+#寻找最好的K值
+#def main():
+    from sklearn import datasets
+    digits=datasets.load_digits()
+    x=digits.data
+    y=digits.target
+    from sklearn.model_selection import train_test_split
+    x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=666)
+    from sklearn.neighbors import KNeighborsClassifier
+    # 寻找最好的k
+    best_k=-1
+    best_score=0
+    for i in range(1,11):
+        knn_clf=KNeighborsClassifier(n_neighbors=i)
+        knn_clf.fit(x_train,y_train)
+        scores=knn_clf.score(x_test,y_test)
+        if scores>best_score:
+            best_score=scores
+            best_k=i
+    print('最好的k为:%d,最好的得分为:%.4f'%(best_k,best_score))
+if __name__ == '__main__':
+    main()
+
