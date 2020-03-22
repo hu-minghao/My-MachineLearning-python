@@ -1,0 +1,18 @@
+#方法1 ,使用python自带的set()集合函数，可以方便的达到重复数过滤的目的。
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        return len(set(nums))!= len(nums)
+#一行代码搞定
+
+#方法2，使用字典，记录数组值
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        dic = {}
+        flag = False
+        for i in nums:
+            if str(i) not in dic:
+                dic[str(i)]=1
+            else:
+                flag = True
+        return flag
+        
