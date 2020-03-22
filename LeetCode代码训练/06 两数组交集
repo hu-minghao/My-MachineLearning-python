@@ -1,0 +1,13 @@
+#方法有点错误，边界溢出，需要改一下
+class Solution:
+    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        num = nums2
+        nums3=[]
+        if len(nums1)<len(nums2):
+            num = nums1  
+        for i in range(len(num)):
+            if num[i] in nums1 and num[i] in nums2:
+                nums3.append(num[i])
+                nums1.remove(num[i])
+                nums2.remove(num[i])
+        return nums3
