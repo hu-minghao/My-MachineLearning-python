@@ -1,0 +1,15 @@
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        dic = {}
+        for i in nums:
+            if i not in dic:
+                dic[i]=1
+            else:
+                dic[i]+=1
+        for j in dic.keys():
+            if dic[j]==1:
+                flag=j
+                break
+        return flag
+#利用字典，keys为数值，value为数值出现的次数
+#缺点，字典只能实现单向查询，第二遍找值时需要对字典再循环一边
