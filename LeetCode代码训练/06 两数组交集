@@ -11,3 +11,21 @@ class Solution:
                 nums1.remove(num[i])
                 nums2.remove(num[i])
         return nums3
+ #第二天对原方法进行debug，发现是列表拷贝的错误。
+ 改进如下：
+ class Solution:
+    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        num = copy.deepcopy(nums2)
+        nums3=[]
+        if len(nums1)<len(nums2):
+            num = copy.deepcopy(nums1)  
+        for i in range(len(num)):
+            if num[i] in nums1 and num[i] in nums2:
+                nums3.append(num[i])
+                nums1.remove(num[i])
+                nums2.remove(num[i])
+        return nums3
+    #使用copy.deepcopy()拷贝，深拷贝出的数组与原数组无任何关系，如果直接赋值，则为非拷贝方法，二者指向同一个储存地址。
+    #如果用=直接赋值，是非拷贝方法。这两个列表是等价的，修改其中任何一个列表都会影响到另一个列表。这也是Python作为动态语言与C这类静态语言在思想上的不同之处。    
+#通过使用[:]切片，可以浅拷贝整个列表。同样的，只对第一层实现深拷贝。
+
