@@ -26,6 +26,18 @@ class Solution:
                 move(i-1)
             elif nums[i]==0:
                 move(i)
+        return nums
 
-
+#大神算法
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        i = 0
+        j = 0
+        for i in range(len(nums)):
+            if nums[i]!=0:
+                nums[j],nums[i]=nums[i],nums[j]#j代表前j位非零元素，零值会被j值逐渐过渡取代掉
+                j+=1
         return nums
