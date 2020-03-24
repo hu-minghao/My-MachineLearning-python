@@ -498,5 +498,66 @@ print "AUC Score (Train): %f" % metrics.roc_auc_score(y, y_predprob)
         print "Accuracy : %.4g" % metrics.accuracy_score(y.values, y_pred)
         print "AUC Score (Train): %f" % metrics.roc_auc_score(y, y_predprob)
 
-第九章 EM模型
+# 第九章 EM算法
+* Em算法为含有未知参数的概率模型的极大似然估计算法，为一种迭代算法。
+# 第十章 隐马尔科夫模型
+* 隐马尔科夫模型是对时序数据进行建模的模型，建立状态序列与观测序列的联合分布。其中状态序列是不可见的，为隐藏的。其中某一状态只和前一状态有关，且观测值之间相互独立。
+
+## 隐马尔科夫模型的python实现
+import numpy as np
+## from hmmlearn import hmm
+
+states = ["A", "B", "C"]
+n_states = len(states)
+
+observations = ["down","up"]
+n_observations = len(observations)
+
+p = np.array([0.7, 0.2, 0.1])
+a = np.array([
+  [0.5, 0.2, 0.3],
+  [0.3, 0.5, 0.2],
+  [0.2, 0.3, 0.5]
+])
+b = np.array([
+  [0.6, 0.2],
+  [0.3, 0.3],
+  [0.1, 0.5]
+])
+o = np.array([[1, 0, 1, 1, 1]]).T
+
+## model = hmm.MultinomialHMM(n_components=n_states)
+## model.startprob_= p
+## model.transmat_= a
+## model.emissionprob_= b
+## logprob, h = model.decode(o, algorithm="viterbi")
+## print("The hidden h", ", ".join(map(lambda x: states[x], h)))
+
+这里我们使用了Python的马尔可夫库hmmlearn，可通过命令 $ pip install hmmlearn安装（sklearn的hmm已停止更新，无法正常使用，所以用了hmmlearn库）
+ 马尔可夫模型λ=(A,B,Π)，A,B,Π是模型的参数，此例中我们直接给出，并填充到模型中，通过观测值和模型的参数，求取隐藏状态。
+
+
+    EM（Expectation Maximization）最大期望算法是十大数据挖掘经典算法之一。之前一直没见过EM的实现工具和应用场景，直到看见HMM的具体算法。HMM的核心算法是通过观测值计算模型参数，具体使用Baum-Welch算法，它是EM的具体实现，下面来看看EM算法。
+    假设条件是X，结果是Y，条件能推出结果X->Y，但结果推不出条件，现在手里有一些对结果Y的观测值，想求X，那么我们举出X的所有可能性，再使用X->Y的公式求Y，看哪个X计算出的Y和当前观测最契合，就选哪个X。这就是最大似然的原理。在数据多的情况下，穷举因计算量太大而无法实现，最大期望EM是通过迭代逼近方式求取最大似然。
+    EM算法分为两个步骤：Ｅ步骤是求在当前参数值和样本下的期望函数，M步骤利用期望函数调整模型中的估计值，循环执行E和M直到参数收敛。
+    RNN是循环神经网络，LSTM是RNN的一种优化算法，近年来，RNN在很多领域取代了HMM。下面我们来看看它们的异同。
+    首先，RNN和HMM解决的都是基于序列的问题，也都有隐藏层的概念，它们都通过隐藏层的状态来生成可观测状态。
+    
+## 隐马可夫模型常用领域
+1.语音识别，使用的就是第一问题，解码问题
+2.股票预测，使用的问题2，预测概率问题
+3.XSS攻击检测，使用的问题2，预测概率问题
+对于XSS攻击，首先我们需要对数据进行泛化,比如：
+[a-zA-Z]泛化为A
+[0-9]泛化为N
+[-_]泛化为C
+其他字符泛化为T
+其中ANCT为可观测离散值，则对于URL中有字符串uid=admin123，则有:
+admin123->AAAAANNN，而uid=%3Cscript->TNAAAAAAA。
+假设我们只训练白样本，生成模型，则当识别一个白样本时score值就很高，然后拿去识别XSS，带有XSS黑样本的score值就会很低。
+
+
+
+
+
      
