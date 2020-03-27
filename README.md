@@ -570,6 +570,129 @@ admin123->AAAAANNN，而uid=%3Cscript->TNAAAAAAA。
 概率估计则是数据纵向与横向的综合比较。
 因此无监督学习常用于数据分析或监督学习之前。
 
+# 第十四章 聚类
+* 层次聚类
+将样本每个样点分为一类，（单独的一类），将两两最近的类合并，合并依据是以距离度量相似度。常用的距离有闵科夫斯基距离。只到类别数达到要求。-合并法
+分裂法则是将所有样本化为一个类，然后按距离最远的两个类分裂，直到类别数量达到要求。这里的距离可以是最远距离，平均距离，中心距离。
+* k均值聚类
+设几个类（假设k个中心点），然后计算样本到这k个中心点的距离，将样本归到最近中心点代表的类。划分完后重新计算类的中心，再重新划分类，直到中心不再变动。
+
+## 例子层次聚类
+import numpy as np
+## from sklearn.cluster import AgglomerativeClustering
+import random
+import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import dendrogram, linkage
+
+point_random = []
+for i in range(10):
+    rx = random.uniform(0, 10)
+    ry = random.uniform(0, 10)
+    point_random.append([rx, ry])
+
+#  簇族 分组量
+group_size = 3
+
+## cls = AgglomerativeClustering(n_clusters=group_size,linkage='ward')
+
+## cluster_group = cls.fit(np.array(point_random))
+
+## cnames = ['black', 'blue', 'red']
+
+for point, gp_id in zip(point_random, cluster_group.labels_):
+    # 放到 plt 中展示
+    plt.scatter(point[0], point[1], s=5, c=cnames[gp_id], alpha=1)
+
+plt.show()
+
+## 进一步可视化
+import numpy as np
+import matplotlib.pyplot as plt 
+from sklearn.cluster import AgglomerativeClustering
+
+from scipy.cluster.hierarchy import dendrogram, linkage
+
+data = np.random.randint(0,10,size=[10,2])
+
+Z = linkage(data)
+
+dendrogram(Z)  
+
+import matplotlib.pyplot as plt  
+import pandas as pd  
+import numpy as np
+import scipy.cluster.hierarchy as shc
+customer_data = pd.read_csv(r'.\shopping_data.csv')  
+
+
+# 获取收入和支出
+data = customer_data.iloc[:, 3:5].values  
+
+
+plt.figure(figsize=(10, 7))  
+plt.title("Customer Dendograms")  
+dend = shc.dendrogram(shc.linkage(data, method='ward'))  
+plt.savefig("./收支-01.jpg")
+plt.show()
+#%%
+
+from sklearn.cluster import AgglomerativeClustering
+
+cluster = AgglomerativeClustering(n_clusters=5, affinity='euclidean', linkage='ward')  
+cluster.fit_predict(data) 
+
+
+
+plt.figure(figsize=(10, 7))  
+plt.scatter(data[:,0], data[:,1], c=cluster.labels_, cmap='rainbow')  
+plt.savefig("./收支-02.jpg")
+plt.show()
+
+## 层次聚类算法练习
+    import numpy as np
+    import pandas as pd
+    from sklearn.cluster import AgglomerativeClustering
+    import matplotlib.pyplot as plt
+    from scipy.spatial.distance import pdist,squareform
+    from scipy.cluster.hierarchy import linkage
+    from scipy.cluster.hierarchy import dendrogram
+    import matplotlib as mpl
+    from mpl_toolkits.mplot3d import Axes3D
+
+    np.random.seed(130)
+    x=np.random.random_sample([5,3])*10# 生成的随机小于1的数乘以10
+    label=['ID_0','ID_1','ID_2','ID_3','ID_4']
+    variables=['X','Y','Z']
+    df=pd.DataFrame(x,index=label,columns=variables)
+    ac = AgglomerativeClustering(n_clusters=2,affinity='euclidean',linkage='complete')
+    labels=ac.fit_predict(x)
+    df['target']=labels
+    print(df)
+    row_clusters = linkage(pdist(df,metric='euclidean'),method='complete')#计算欧式距离
+    #row_clusters = linkage(df.values,method='complete',metric='euclidean')
+    print (pd.DataFrame(row_clusters,columns=['row label1','row label2','distance','no. of items in clust.'],index=['cluster %d'%(i+1) for i in range(row_clusters.shape[0])]))
+    #层次聚类树
+    row_dendr = dendrogram(row_clusters,labels=labels)
+    plt.tight_layout()
+    plt.ylabel('Euclidean distance')
+    plt.savefig('./001.png')
+    plt.show()
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.scatter(df['X'], df['Y'], df['Z'], c=df['target'])
+    ax.set_xlabel('X Label')
+    ax.set_ylabel('Y Label')
+    ax.set_zlabel('Z Label')
+
+    plt.show()
+    
+    
+    
+
+
+
+
+
 
 
 
