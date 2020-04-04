@@ -1,0 +1,40 @@
+## 聚类，对wine数据集进行聚类及预测
+
+from sklearn import datasets
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+from sklearn.metrics import silhouette_score
+from sklearn.metrics import calinski_harabaz_score
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+sc=StandardScaler()
+'''载入wine数据'''
+n_cluster=[]
+intera=[]
+silhouette=[]
+wine= datasets.load_wine()
+data=sc.fit_transform(wine.data)
+train_x,test_x,train_y,test_y=train_test_split(test_size=0.3,random_state=18)
+for i in range(2,11,1):
+    model = KMeans(n_clusters=i)
+    model.fit(data)
+    n_cluster.append(i)
+    intera.append(model.inertia_)
+    y_pre=model.labels_
+    silhouette.append(calinski_harabaz_score(data, y_pre))
+#plt.subplots(2,1,1)
+#plt.plot(n_cluster,intera)
+#plt.legend(['wine'])
+#plt.xlabel('n_clusters')
+#plt.ylabel('intera')
+plt.plot(n_cluster,silhouette)
+plt.legend(['breast_cancer'])
+plt.xlabel('n_clusters')
+plt.ylabel('iris')
+plt.savefig('./kMeans聚类红酒-CH系数-标准化数据')
+
+'''显示自变量的形状'''
+#print(data[0,:])
+
+
+
