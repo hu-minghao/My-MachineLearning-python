@@ -1,24 +1,29 @@
+#训练模型，基于最优分类点进行训练，簇数量为3
 from sklearn import datasets
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 from sklearn.metrics import silhouette_score
 from sklearn.metrics import calinski_harabaz_score
 from sklearn.preprocessing import StandardScaler
+#训练加预测，需要样本分隔
 from sklearn.model_selection import train_test_split
+#保存模型，joblib
 from sklearn.externals import joblib
-sc=StandardScaler()
 '''载入wine数据'''
-n_cluster=[]
-intera=[]
-silhouette=[]
 wine= datasets.load_wine()
+sc=StandardScaler()
 data=sc.fit_transform(wine.data)
+#测试了多个分类点，最后测试集比例为0.1,效果最好
 train_x,test_x,train_y,test_y=train_test_split(data,wine.target,test_size=0.1,random_state=18)
+#训练
 model=KMeans(n_clusters=3)
 model.fit(train_x)
+#保存模型
 joblib.dump(model,'./wine_KMeans.pkl')
+#加载模型，进行预测
 clf=joblib.load('wine_KMeans.pkl')
 y_pre=clf.predict(data)
 print('准确率为：',(y_pre==wine.target).sum()/len(wine.target))
 
-结果准确率：准确率为： 0.9719101123595506
+#对所有数据进行预测，准确率很高，nice
+结果：准确率：准确率为： 0.9719101123595506
