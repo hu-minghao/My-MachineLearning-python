@@ -1,40 +1,43 @@
 ## 聚类，对wine数据集进行聚类及预测
-
+# 用kMeans算法，首先进行无监督学习过程，去除标签，将样品分类，之后利用聚类结果实现对高维数据的预测，模型结果准
+确率为0.97，大大超出我的预期，聚类算法效果这么好？
+#datasets库有五六个数据集，包括iris
 from sklearn import datasets
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans#另外还有个K_means
 import matplotlib.pyplot as plt
-from sklearn.metrics import silhouette_score
+#三个评价指标
+from sklearn.metrics import silhouette_score 
 from sklearn.metrics import calinski_harabaz_score
+#数据标准化，就是化为标准正态分布
 from sklearn.preprocessing import StandardScaler
+#要预测准确率，结果测试集准确率为1，全对
 from sklearn.model_selection import train_test_split
-sc=StandardScaler()
+
 '''载入wine数据'''
+wine= datasets.load_wine()
+'''数据标准化'''
+sc=StandardScaler()
+data=sc.fit_transform(wine.data)
+
 n_cluster=[]
 intera=[]
 silhouette=[]
-wine= datasets.load_wine()
-data=sc.fit_transform(wine.data)
-train_x,test_x,train_y,test_y=train_test_split(test_size=0.3,random_state=18)
+#遍历寻找簇数量
 for i in range(2,11,1):
     model = KMeans(n_clusters=i)
     model.fit(data)
     n_cluster.append(i)
-    intera.append(model.inertia_)
+    intera.append(model.inertia_)#簇内平方和
     y_pre=model.labels_
-    silhouette.append(calinski_harabaz_score(data, y_pre))
-#plt.subplots(2,1,1)
-#plt.plot(n_cluster,intera)
-#plt.legend(['wine'])
-#plt.xlabel('n_clusters')
-#plt.ylabel('intera')
+    silhouette.append(calinski_harabaz_score(data, y_pre))#评价指标：CH系数，轮廓系数
+
 plt.plot(n_cluster,silhouette)
 plt.legend(['breast_cancer'])
 plt.xlabel('n_clusters')
-plt.ylabel('iris')
+plt.ylabel('wine')
 plt.savefig('./kMeans聚类红酒-CH系数-标准化数据')
 
-'''显示自变量的形状'''
-#print(data[0,:])
+
 
 
 
