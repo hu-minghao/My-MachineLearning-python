@@ -37,6 +37,10 @@ plt.xlabel('n_clusters')
 plt.ylabel('wine')
 plt.savefig('./kMeans聚类红酒-CH系数-标准化数据')
 
+#标准化后的数据，在簇数量为3处为最大值，可以确定其为最佳分类数点。实际红酒分类也是三类
+
+https://github.com/hu-minghao/My-MachineLearning-python/blob/master/kMeans%E8%81%9A%E7%B1%BB%E7%BA%A2%E9%85%92-CH%E7%B3%BB%E6%95%B0-%E6%A0%87%E5%87%86%E5%8C%96%E6%95%B0%E6%8D%AE.png
+
 
 
 
